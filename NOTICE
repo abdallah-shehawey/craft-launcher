@@ -45,7 +45,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 Noto Emoji font (dependency asset)
 ----------------------------------
 epaint_default_fonts 0.37, pinned with egui 0.37 at
-https://github.com/storytold/egui/tree/ba04bd7de66afaba82fd44aa235aa1d060559ee7/crates/epaint_default_fonts/fonts,
+https://github.com/storytold/egui/tree/69750b71a97dc4672e2fbb70863b838e6795c910/crates/epaint_default_fonts/fonts,
 embeds NotoEmoji-Regular.ttf, the monochrome emoji fallback used when egui's
 `monochrome_emoji_fonts` feature is enabled. The font's copyright notice and the
 upstream SIL Open Font License 1.1 text follow unchanged.
@@ -149,7 +149,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 Ubuntu-Light.ttf (dependency asset)
 ----------------------------------------
 Included by epaint_default_fonts at egui revision
-ba04bd7de66afaba82fd44aa235aa1d060559ee7.
+69750b71a97dc4672e2fbb70863b838e6795c910.
 Copyright 2011 Canonical Ltd.  Licensed under the Ubuntu Font Licence 1.0
 
 -------------------------------
@@ -253,7 +253,7 @@ DEALINGS IN THE FONT SOFTWARE.
 Hack-Regular.ttf (dependency asset)
 ----------------------------------------
 Included by epaint_default_fonts at egui revision
-ba04bd7de66afaba82fd44aa235aa1d060559ee7.
+69750b71a97dc4672e2fbb70863b838e6795c910.
 
 The work in the Hack project is Copyright 2018 Source Foundry Authors and licensed under the MIT License
 
