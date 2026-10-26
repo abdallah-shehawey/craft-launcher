@@ -379,3 +379,6 @@ filter	Installed	Installées
 	Show {n} more changes	Afficher {n} modifications de plus
 	Last updated: {date}	Dernière mise à jour : {date}
 column	Version	Version
+
+	Interface size	Taille de l’interface
+	Follow display scale	Suivre l’échelle de l’écran

@@ -384,3 +384,6 @@ filter	Installed	インストール済み
 	Show {n} more changes	さらに{n}件の変更を表示
 	Last updated: {date}	最終更新: {date}
 column	Version	バージョン
+
+	Interface size	インターフェースのサイズ
+	Follow display scale	画面の拡大率に合わせる

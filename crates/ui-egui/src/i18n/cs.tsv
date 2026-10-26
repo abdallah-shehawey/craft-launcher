@@ -349,3 +349,6 @@ filter	Installed	Nainstalováno
 	Show {n} more changes	Zobrazit dalších změn: {n}
 	Last updated: {date}	Naposledy aktualizováno: {date}
 column	Version	Verze
+
+	Interface size	Velikost rozhraní
+	Follow display scale	Podle měřítka obrazovky

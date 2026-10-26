@@ -381,3 +381,6 @@ filter	Installed	Installiert
 	Show {n} more changes	{n} weitere Änderungen anzeigen
 	Last updated: {date}	Zuletzt aktualisiert: {date}
 column	Version	Version
+
+	Interface size	Oberflächengröße
+	Follow display scale	Bildschirmskalierung folgen

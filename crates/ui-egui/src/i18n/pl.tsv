@@ -383,3 +383,6 @@ filter	Installed	Zainstalowane
 	Show {n} more changes	Pokaż {n} więcej zmian
 	Last updated: {date}	Ostatnia aktualizacja: {date}
 column	Version	Wersja
+
+	Interface size	Rozmiar interfejsu
+	Follow display scale	Użyj skali ekranu

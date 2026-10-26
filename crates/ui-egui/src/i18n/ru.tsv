@@ -377,3 +377,6 @@ filter	Installed	Установлены
 	Show {n} more changes	Показать ещё изменений: {n}
 	Last updated: {date}	Последнее обновление: {date}
 column	Version	Версия
+
+	Interface size	Размер интерфейса
+	Follow display scale	Использовать масштаб экрана

@@ -160,6 +160,7 @@ pub struct LauncherUi {
     pub(crate) pictures: std::collections::HashMap<(String, String), crate::details::Picture>,
     started: bool,
     applied_theme: Option<theme::ThemeChoice>,
+    applied_interface_size: Option<(u16, f32)>,
     /// The OS asks for fewer animations: what the host last said, and the context's time to ask
     /// it again at.
     pub(crate) reduce_motion: bool,
@@ -256,6 +257,7 @@ impl LauncherUi {
             pictures: std::collections::HashMap::new(),
             started: false,
             applied_theme: None,
+            applied_interface_size: None,
             reduce_motion: false,
             motion_recheck: 0.0,
             applied_motion: None,
@@ -281,6 +283,7 @@ impl LauncherUi {
         egui_extras::install_image_loaders(ctx);
         self.fonts_ready = false;
         self.applied_theme = None;
+        self.applied_interface_size = None;
         self.applied_motion = None;
         self.motion_recheck = 0.0;
         self.toasts.clear();
@@ -449,6 +452,17 @@ impl LauncherUi {
 
     /// Non-drawing work: runs every frame and also while the window is hidden in the tray.
     pub fn logic(&mut self, ctx: &egui::Context, host: &mut dyn Host) {
+        let percent = self.settings.interface_size;
+        let native = ctx.native_pixels_per_point().filter(|s| s.is_finite() && *s > 0.0).unwrap_or(1.0);
+        let zoom = if percent == 0 { 1.0 } else { f32::from(percent.clamp(50, 300)) / (100.0 * native) };
+        if self.applied_interface_size != Some((percent, native)) {
+            // Auto keeps the host's transient zoom (including headless/control views). Only an
+            // explicit preference, or returning from one to Auto, changes that zoom here.
+            if percent != 0 || self.applied_interface_size.is_some_and(|(previous, _)| previous != 0) {
+                ctx.set_zoom_factor(zoom);
+            }
+            self.applied_interface_size = Some((percent, native));
+        }
         // Messages made here (toasts, alerts) are drawn later, so use the language the UI can
         // actually show: English where the system has no CJK face for the preference.
         set_current(effective_lang(&self.settings.language));
@@ -724,7 +738,8 @@ impl LauncherUi {
             };
             self.notes_zoom = if reset { 1.0 } else { ((self.notes_zoom + step) * delta).clamp(0.5, 3.0) };
         } else if delta != 1.0 {
-            ctx.set_zoom_factor((ctx.zoom_factor() * delta).clamp(0.2, 5.0));
+            self.settings.interface_size = ((ctx.pixels_per_point() * delta * 100.0).round().clamp(50.0, 300.0)) as u16;
+            ctx.request_repaint();
         }
     }
 
@@ -988,6 +1003,27 @@ impl LauncherUi {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn interface_size_is_persisted_and_applied_independently_of_display_scale() {
+        let (mut app, _, ctx) = launcher();
+        for native in [1.0, 1.5, 2.0] {
+            for percent in [0, 100, 150, 157, 200] {
+                app.settings.interface_size = percent;
+                let saved = serde_json::to_string(&app.settings).unwrap();
+                app.settings = serde_json::from_str(&saved).unwrap();
+                let mut input = egui::RawInput::default();
+                input.viewports.entry(egui::ViewportId::ROOT).or_default().native_pixels_per_point = Some(native);
+                for _ in 0..2 {
+                    let mut output = ctx.run_ui(input.clone(), |ui| app.logic(ui.ctx(), &mut NoHost));
+                    output.textures_delta.clear();
+                }
+                let expected = if percent == 0 { native } else { f32::from(percent) / 100.0 };
+                assert!((ctx.pixels_per_point() - expected).abs() < 0.001);
+                assert_eq!(app.settings.interface_size, percent);
+            }
+        }
+    }
+
     use std::cell::RefCell;
     use std::rc::Rc;
 
