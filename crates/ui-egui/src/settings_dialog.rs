@@ -353,14 +353,14 @@ impl LauncherUi {
         let mut theme_choice = self.settings.theme;
         sheet::panel(ui, tl!("Appearance"), |ui| {
             ui.horizontal(|ui| {
-                ui.label(tl!("Interface size"));
+                let label = ui.label(tl!("Interface size"));
                 let percent = &mut self.settings.interface_size;
                 let mut automatic = *percent == 0;
                 if ui.checkbox(&mut automatic, tl!("Follow display scale")).changed() {
                     *percent = if automatic { 0 } else { 100 };
                 }
                 let mut value = if automatic { 100 } else { (*percent).clamp(50, 300) };
-                if ui.add_enabled(!automatic, egui::DragValue::new(&mut value).range(50..=300).suffix("%")).changed() {
+                if ui.add_enabled(!automatic, egui::DragValue::new(&mut value).range(50..=300).suffix("%")).labelled_by(label.id).changed() {
                     *percent = value;
                 }
             });
